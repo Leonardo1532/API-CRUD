@@ -63,7 +63,7 @@ async function GetId(url = '') {
         referrerPolicy: 'no-referrer',
     });
 
-    return response.json();
+    return response.json()
 
 }
 
@@ -145,63 +145,67 @@ async function Put(url = '', data = {}) {
         redirect: 'follow',
 
         referrerPolicy: 'no-referrer',
+
+        body: JSON.stringify(data)
     });
 
     return response.json();
 
 }
 
-let id: string
-let url: string
-let condition = true
-while (condition) {
+async function Fluxo() {
+    let id: string
+    let url: string
+    let condition = true
+    while (condition) {
 
-    let opcao = prompt("Insira a opção desejada, (1: chamar todas os obejtos / 2: chamar um objeto pelo ID / 3: Inserir e criar um novo objeto / 4: Deletar um objeto / 5: Atualizar um objeto / 6: Encerrar o programa)")
+        let opcao = prompt("Insira a opção desejada, (1: chamar todas os obejtos / 2: chamar um objeto pelo ID / 3: Inserir e criar um novo objeto / 4: Deletar um objeto / 5: Atualizar um objeto / 6: Encerrar o programa)")
 
-    switch (opcao) {
-        case "1":
-            Get()
-            break;
+        switch (opcao) {
+            case "1":
+                await Get()
+                break;
 
-        case "2":
-            id = prompt("Insira o ID do objeto")
-            url = "https://apigenerator.dronahq.com/api/ckev-x7x/Carros" + "/" + id
-            GetId(url)
-            break;
+            case "2":
+                id = prompt("Insira o ID do objeto")
+                url = "https://apigenerator.dronahq.com/api/ckev-x7x/Carros/" + id
+                console.log(await GetId(url))
+                break;
 
-        case "3":
-            url = "https://apigenerator.dronahq.com/api/ckev-x7x/Carros"
-            Post(url, CriarCarro())
-            break;
+            case "3":
+                url = "https://apigenerator.dronahq.com/api/ckev-x7x/Carros"
+                await Post(url, CriarCarro())
+                break;
 
-        case "4":
-            id = prompt("Insira o ID do objeto")
-            url = "https://apigenerator.dronahq.com/api/ckev-x7x/Carros" + "/" + id
-            Delete(url)
-            break;
+            case "4":
+                id = prompt("Insira o ID do objeto")
+                url = "https://apigenerator.dronahq.com/api/ckev-x7x/Carros/" + id
+                await Delete(url)
+                break;
 
-        case "5":
-            id = prompt("Insira o ID do objeto")
-            url = "https://apigenerator.dronahq.com/api/ckev-x7x/Carros" + "/" + id
+            case "5":
+                id = prompt("Insira o ID do objeto")
+                url = "https://apigenerator.dronahq.com/api/ckev-x7x/Carros/" + id
 
-            Put(url, CriarCarro())
-                .then(response => {
-                    console.log('Resposta:', response);
-                })
-                .catch(error => {
-                    console.error('Erro:', error);
-                });
-            break;
+                await Put(url, CriarCarro())
+                    .then(response => {
+                        console.log('Resposta:', response);
+                    })
+                    .catch(error => {
+                        console.error('Erro:', error);
+                    });
+                break;
 
-        case "6":
-            console.log("Programa encerrado com sucesso")
-            condition = false
-            break;
+            case "6":
+                console.log("Programa encerrado com sucesso")
+                condition = false
+                break;
 
-        default:
-            console.log("Opção inserida inválida")
-            condition = false
-            break;
+            default:
+                console.log("Opção inserida inválida")
+                condition = false
+                break;
+        }
+
     }
-
 }
